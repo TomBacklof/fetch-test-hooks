@@ -1,33 +1,27 @@
 import React, { useEffect, useState } from "react";
-import Quote from "./QuoteHooks";
 
 function App() {
-  const [showFirstQuote, setShowFirstQuote] = useState(true);
-  const [quote, setQuote] = useState("");
+  const [delay, setDelay] = useState("");
 
-  function toggleButton() {
-    setShowFirstQuote(!showFirstQuote);
-  }
-
-  function beans() {
+  function fetchData() {
     fetch(
       "https://cors-anywhere.herokuapp.com/https://labs.thetrainbrain.com/knockon/?minutes=120"
     )
       .then(response => response.json())
-      .then(data => setQuote(data));
-    console.log("beansbeans");
+      .then(data => setDelay(data));
   }
 
   useEffect(() => {
     setInterval(() => {
-      beans();
+      fetchData();
     }, 5000);
   }, []);
 
   return (
     <div>
-      <button onClick={() => toggleButton()}>Toggle</button>
-      {showFirstQuote ? <Quote quote={quote} /> : ""}
+      {delay.disruptions.station.map(disruptions => (
+        <p>{disruptions.station.station}</p>
+      ))}
     </div>
   );
 }
